@@ -1,0 +1,98 @@
+[
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_bg_qr_overlay.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\bg_qr_overlay.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_activity_qr_check_in.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_qr_check_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_fragment_home.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\menu_bottom_nav_menu.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\menu\\bottom_nav_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_item_booking.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\item_booking.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_item_room.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\item_room.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\navigation_nav_graph.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\navigation\\nav_graph.xml"
+    },
+    {
+        "merged": "com.example.studyspace.app-release-69:/layout_activity_room_detail.xml.flat",
+        "source": "com.example.studyspace.app-main-70:/layout/activity_room_detail.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_activity_maps.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_maps.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_ic_home.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\ic_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_bg_status_booked.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\bg_status_booked.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_fragment_my_bookings.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\fragment_my_bookings.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_ic_person.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\ic_person.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_activity_room_detail.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_room_detail.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_ic_book.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\ic_book.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\drawable_bg_status_available.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\drawable\\bg_status_available.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_activity_register.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_register.xml"
+    },
+    {
+        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-release-69:\\layout_fragment_profile.xml.flat",
+        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\fragment_profile.xml"
+    }
+]
