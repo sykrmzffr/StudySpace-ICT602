@@ -3525,6 +3525,7 @@ id jumpToEnd
 id jumpToStart
 id labeled
 id layout
+id layoutActions
 id left
 id leftToRight
 id legacy

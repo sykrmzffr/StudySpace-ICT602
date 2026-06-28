@@ -221,6 +221,7 @@
 
     <!-- Actions (Navigate & Book) -->
     <LinearLayout
+        android:id="@+id/layoutActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
@@ -272,7 +273,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnBook" />
+            app:layout_constraintTop_toBottomOf="@id/layoutActions" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

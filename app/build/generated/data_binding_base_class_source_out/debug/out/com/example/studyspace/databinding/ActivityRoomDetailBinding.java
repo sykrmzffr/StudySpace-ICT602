@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,6 +49,9 @@ public final class ActivityRoomDetailBinding implements ViewBinding {
   public final FrameLayout headerImageContainer;
 
   @NonNull
+  public final LinearLayout layoutActions;
+
+  @NonNull
   public final LinearProgressIndicator progressBar;
 
   @NonNull
@@ -81,11 +85,11 @@ public final class ActivityRoomDetailBinding implements ViewBinding {
       @NonNull MaterialButton btnBook, @NonNull MaterialButton btnNavigate,
       @NonNull MaterialButton btnSelectDate, @NonNull MaterialCardView cardDetails,
       @NonNull Chip chipStatus, @NonNull FrameLayout headerImageContainer,
-      @NonNull LinearProgressIndicator progressBar, @NonNull Spinner spinnerTimeSlot,
-      @NonNull TextView tvBookingHeader, @NonNull TextView tvCapacity,
-      @NonNull TextView tvDateLabel, @NonNull TextView tvFloor, @NonNull TextView tvRoomLocation,
-      @NonNull TextView tvRoomName, @NonNull TextView tvSelectedDate,
-      @NonNull TextView tvTimeLabel) {
+      @NonNull LinearLayout layoutActions, @NonNull LinearProgressIndicator progressBar,
+      @NonNull Spinner spinnerTimeSlot, @NonNull TextView tvBookingHeader,
+      @NonNull TextView tvCapacity, @NonNull TextView tvDateLabel, @NonNull TextView tvFloor,
+      @NonNull TextView tvRoomLocation, @NonNull TextView tvRoomName,
+      @NonNull TextView tvSelectedDate, @NonNull TextView tvTimeLabel) {
     this.rootView = rootView;
     this.btnBack = btnBack;
     this.btnBook = btnBook;
@@ -94,6 +98,7 @@ public final class ActivityRoomDetailBinding implements ViewBinding {
     this.cardDetails = cardDetails;
     this.chipStatus = chipStatus;
     this.headerImageContainer = headerImageContainer;
+    this.layoutActions = layoutActions;
     this.progressBar = progressBar;
     this.spinnerTimeSlot = spinnerTimeSlot;
     this.tvBookingHeader = tvBookingHeader;
@@ -175,6 +180,12 @@ public final class ActivityRoomDetailBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.layoutActions;
+      LinearLayout layoutActions = ViewBindings.findChildViewById(rootView, id);
+      if (layoutActions == null) {
+        break missingId;
+      }
+
       id = R.id.progressBar;
       LinearProgressIndicator progressBar = ViewBindings.findChildViewById(rootView, id);
       if (progressBar == null) {
@@ -236,7 +247,7 @@ public final class ActivityRoomDetailBinding implements ViewBinding {
       }
 
       return new ActivityRoomDetailBinding((ScrollView) rootView, btnBack, btnBook, btnNavigate,
-          btnSelectDate, cardDetails, chipStatus, headerImageContainer, progressBar,
+          btnSelectDate, cardDetails, chipStatus, headerImageContainer, layoutActions, progressBar,
           spinnerTimeSlot, tvBookingHeader, tvCapacity, tvDateLabel, tvFloor, tvRoomLocation,
           tvRoomName, tvSelectedDate, tvTimeLabel);
     }

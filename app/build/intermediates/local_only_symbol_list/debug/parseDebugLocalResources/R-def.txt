@@ -61,6 +61,7 @@ id ivDate
 id ivLocation
 id ivLogo
 id ivTime
+id layoutActions
 id map
 id nav_graph
 id nav_host_fragment
