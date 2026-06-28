@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">StudySpace</string>
+    <string name="app_tagline">Your Campus Study Room Companion</string>
+
+    <!-- Auth Screens -->
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="student_id">Student ID</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="no_account">Don\'t have an account? Sign Up</string>
+    <string name="have_account">Already have an account? Login</string>
+    <string name="login_success">Welcome back!</string>
+    <string name="register_success">Account created! Please log in.</string>
+
+    <!-- Validation -->
+    <string name="error_empty_email">Please enter your email</string>
+    <string name="error_empty_password">Please enter your password</string>
+    <string name="error_empty_name">Please enter your full name</string>
+    <string name="error_empty_student_id">Please enter your student ID</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_password_short">Password must be at least 6 characters</string>
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_no_internet">No internet connection. Please check your network.</string>
+
+    <!-- Home -->
+    <string name="study_rooms">Study Rooms</string>
+    <string name="available_rooms">Available Rooms</string>
+    <string name="my_bookings">My Bookings</string>
+    <string name="profile">Profile</string>
+    <string name="book_now">Book Now</string>
+    <string name="navigate">Navigate</string>
+    <string name="check_in">Check In</string>
+
+    <!-- Booking Status -->
+    <string name="status_pending">Pending</string>
+    <string name="status_confirmed">Confirmed</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="status_available">Available</string>
+    <string name="status_booked">Booked</string>
+
+    <!-- QR Check-In -->
+    <string name="scan_qr">Scan Room QR Code</string>
+    <string name="qr_instruction">Point your camera at the room\'s QR code to check in</string>
+
+    <!-- Logout -->
+    <string name="logout">Logout</string>
+    <string name="logout_confirm">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+</resources>

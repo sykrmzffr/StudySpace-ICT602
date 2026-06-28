@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "59376547767",
+    "project_id": "studyspace-ict602",
+    "storage_bucket": "studyspace-ict602.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59376547767:android:ac0f3c4f8bd06e29ef9a32",
+        "android_client_info": {
+          "package_name": "com.example.studyspace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlT3VM9espg_JhKf3SXv_6b9VltXNZuSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
