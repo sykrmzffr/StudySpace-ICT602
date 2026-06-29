@@ -115,6 +115,15 @@ public class RoomDetailActivity extends AppCompatActivity {
                 startActivity(mapIntent);
             }
         });
+
+        binding.spinnerTimeSlot.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                checkCapacity();
+            }
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+        });
     }
 
     private void fetchRoomDetails() {
@@ -150,14 +159,13 @@ public class RoomDetailActivity extends AppCompatActivity {
             binding.tvCapacity.setText(selectedRoom.getCapacity() + " People");
             binding.tvFloor.setText("Floor " + selectedRoom.getFloor());
 
-            if (selectedRoom.isAvailable()) {
-                binding.chipStatus.setText(getString(R.string.status_available));
-                binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_light);
-            } else {
+            if (!selectedRoom.isAvailable()) {
                 binding.chipStatus.setText("Unavailable");
                 binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_red_light);
                 binding.btnBook.setEnabled(false);
             }
+            
+            checkCapacity();
         }
     }
 
@@ -186,6 +194,56 @@ public class RoomDetailActivity extends AppCompatActivity {
     private void updateDateText() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         binding.tvSelectedDate.setText(sdf.format(calendar.getTime()));
+        checkCapacity();
+    }
+
+    private void checkCapacity() {
+        if (selectedRoom == null) return;
+        
+        if (!selectedRoom.isAvailable()) {
+            binding.chipStatus.setText("Unavailable");
+            binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_red_light);
+            binding.btnBook.setEnabled(false);
+            binding.btnBook.setText("UNAVAILABLE");
+            return;
+        }
+
+        String selectedTime = binding.spinnerTimeSlot.getSelectedItem().toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String selectedDateStr = sdf.format(calendar.getTime());
+        
+        String[] timeParts = selectedTime.split(" - ");
+        String startTime = timeParts.length > 0 ? timeParts[0] : selectedTime;
+
+        binding.btnBook.setEnabled(false);
+        binding.btnBook.setText("Checking availability...");
+
+        firestore.collection("bookings")
+                .whereEqualTo("roomId", roomId)
+                .whereEqualTo("date", selectedDateStr)
+                .whereEqualTo("startTime", startTime)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (!selectedRoom.isAvailable()) return; // Re-check just in case
+
+                    int bookedCount = snapshot.size();
+                    if (bookedCount >= selectedRoom.getCapacity()) {
+                        binding.chipStatus.setText("Fully Booked");
+                        binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_red_light);
+                        binding.btnBook.setEnabled(false);
+                        binding.btnBook.setText("FULLY BOOKED");
+                    } else {
+                        binding.chipStatus.setText("Available (" + (selectedRoom.getCapacity() - bookedCount) + " left)");
+                        binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_light);
+                        binding.btnBook.setEnabled(true);
+                        binding.btnBook.setText("BOOK ROOM");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    showSnackbar("Failed to check availability");
+                    binding.btnBook.setEnabled(true);
+                    binding.btnBook.setText("BOOK ROOM");
+                });
     }
 
     private void performBooking() {

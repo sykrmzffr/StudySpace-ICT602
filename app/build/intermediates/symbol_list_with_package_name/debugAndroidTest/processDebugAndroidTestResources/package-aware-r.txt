@@ -1,0 +1,3 @@
+com.example.studyspace.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
