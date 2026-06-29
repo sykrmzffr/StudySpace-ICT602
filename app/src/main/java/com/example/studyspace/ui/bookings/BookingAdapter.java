@@ -16,14 +16,15 @@ import java.util.List;
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder> {
 
     private List<Booking> bookings = new ArrayList<>();
-    private final OnCheckInClickListener onCheckInClicked;
+    private final BookingClickListener listener;
 
-    public interface OnCheckInClickListener {
+    public interface BookingClickListener {
         void onCheckInClick(Booking booking);
+        void onCancelClick(Booking booking);
     }
 
-    public BookingAdapter(OnCheckInClickListener onCheckInClicked) {
-        this.onCheckInClicked = onCheckInClicked;
+    public BookingAdapter(BookingClickListener listener) {
+        this.listener = listener;
     }
 
     public void updateData(List<Booking> newBookings) {
@@ -75,12 +76,22 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             // Phase 5: Check-in button logic
             if (booking.getStatus().equalsIgnoreCase("Checked In")) {
                 binding.btnCheckIn.setVisibility(View.GONE);
+                binding.btnCancel.setVisibility(View.GONE);
             } else {
                 binding.btnCheckIn.setVisibility(View.VISIBLE);
+                binding.btnCancel.setVisibility(View.VISIBLE);
+                
                 binding.btnCheckIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onCheckInClicked.onCheckInClick(booking);
+                        listener.onCheckInClick(booking);
+                    }
+                });
+                
+                binding.btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onCancelClick(booking);
                     }
                 });
             }

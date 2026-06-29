@@ -13,6 +13,8 @@ import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.studyspace.R;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -22,19 +24,29 @@ public final class FragmentHomeBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
+  public final TextInputEditText etSearch;
+
+  @NonNull
   public final ProgressBar progressBar;
 
   @NonNull
   public final RecyclerView recyclerViewRooms;
 
   @NonNull
+  public final TextInputLayout tilSearch;
+
+  @NonNull
   public final MaterialToolbar toolbar;
 
-  private FragmentHomeBinding(@NonNull ConstraintLayout rootView, @NonNull ProgressBar progressBar,
-      @NonNull RecyclerView recyclerViewRooms, @NonNull MaterialToolbar toolbar) {
+  private FragmentHomeBinding(@NonNull ConstraintLayout rootView,
+      @NonNull TextInputEditText etSearch, @NonNull ProgressBar progressBar,
+      @NonNull RecyclerView recyclerViewRooms, @NonNull TextInputLayout tilSearch,
+      @NonNull MaterialToolbar toolbar) {
     this.rootView = rootView;
+    this.etSearch = etSearch;
     this.progressBar = progressBar;
     this.recyclerViewRooms = recyclerViewRooms;
+    this.tilSearch = tilSearch;
     this.toolbar = toolbar;
   }
 
@@ -65,6 +77,12 @@ public final class FragmentHomeBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.etSearch;
+      TextInputEditText etSearch = ViewBindings.findChildViewById(rootView, id);
+      if (etSearch == null) {
+        break missingId;
+      }
+
       id = R.id.progressBar;
       ProgressBar progressBar = ViewBindings.findChildViewById(rootView, id);
       if (progressBar == null) {
@@ -77,14 +95,20 @@ public final class FragmentHomeBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tilSearch;
+      TextInputLayout tilSearch = ViewBindings.findChildViewById(rootView, id);
+      if (tilSearch == null) {
+        break missingId;
+      }
+
       id = R.id.toolbar;
       MaterialToolbar toolbar = ViewBindings.findChildViewById(rootView, id);
       if (toolbar == null) {
         break missingId;
       }
 
-      return new FragmentHomeBinding((ConstraintLayout) rootView, progressBar, recyclerViewRooms,
-          toolbar);
+      return new FragmentHomeBinding((ConstraintLayout) rootView, etSearch, progressBar,
+          recyclerViewRooms, tilSearch, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

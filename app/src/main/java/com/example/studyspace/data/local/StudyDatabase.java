@@ -12,7 +12,7 @@ import com.example.studyspace.data.model.Booking;
  *
  * This represents the local SQLite database for offline caching.
  */
-@Database(entities = {Booking.class}, version = 2, exportSchema = false)
+@Database(entities = {Booking.class}, version = 3, exportSchema = false)
 public abstract class StudyDatabase extends RoomDatabase {
 
     public abstract BookingDao bookingDao();

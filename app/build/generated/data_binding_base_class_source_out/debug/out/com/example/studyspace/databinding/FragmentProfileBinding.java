@@ -4,6 +4,7 @@ package com.example.studyspace.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,8 @@ import androidx.viewbinding.ViewBindings;
 import com.example.studyspace.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -22,7 +25,31 @@ public final class FragmentProfileBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
+  public final MaterialButton btnChangePassword;
+
+  @NonNull
+  public final MaterialButton btnDeleteAccount;
+
+  @NonNull
   public final MaterialButton btnLogout;
+
+  @NonNull
+  public final MaterialButton btnSave;
+
+  @NonNull
+  public final TextInputEditText etFullName;
+
+  @NonNull
+  public final TextInputEditText etStudentId;
+
+  @NonNull
+  public final ProgressBar progressBar;
+
+  @NonNull
+  public final TextInputLayout tilFullName;
+
+  @NonNull
+  public final TextInputLayout tilStudentId;
 
   @NonNull
   public final MaterialToolbar toolbar;
@@ -30,17 +57,25 @@ public final class FragmentProfileBinding implements ViewBinding {
   @NonNull
   public final TextView tvUserEmail;
 
-  @NonNull
-  public final TextView tvUserName;
-
   private FragmentProfileBinding(@NonNull ConstraintLayout rootView,
-      @NonNull MaterialButton btnLogout, @NonNull MaterialToolbar toolbar,
-      @NonNull TextView tvUserEmail, @NonNull TextView tvUserName) {
+      @NonNull MaterialButton btnChangePassword, @NonNull MaterialButton btnDeleteAccount,
+      @NonNull MaterialButton btnLogout, @NonNull MaterialButton btnSave,
+      @NonNull TextInputEditText etFullName, @NonNull TextInputEditText etStudentId,
+      @NonNull ProgressBar progressBar, @NonNull TextInputLayout tilFullName,
+      @NonNull TextInputLayout tilStudentId, @NonNull MaterialToolbar toolbar,
+      @NonNull TextView tvUserEmail) {
     this.rootView = rootView;
+    this.btnChangePassword = btnChangePassword;
+    this.btnDeleteAccount = btnDeleteAccount;
     this.btnLogout = btnLogout;
+    this.btnSave = btnSave;
+    this.etFullName = etFullName;
+    this.etStudentId = etStudentId;
+    this.progressBar = progressBar;
+    this.tilFullName = tilFullName;
+    this.tilStudentId = tilStudentId;
     this.toolbar = toolbar;
     this.tvUserEmail = tvUserEmail;
-    this.tvUserName = tvUserName;
   }
 
   @Override
@@ -70,9 +105,57 @@ public final class FragmentProfileBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnChangePassword;
+      MaterialButton btnChangePassword = ViewBindings.findChildViewById(rootView, id);
+      if (btnChangePassword == null) {
+        break missingId;
+      }
+
+      id = R.id.btnDeleteAccount;
+      MaterialButton btnDeleteAccount = ViewBindings.findChildViewById(rootView, id);
+      if (btnDeleteAccount == null) {
+        break missingId;
+      }
+
       id = R.id.btnLogout;
       MaterialButton btnLogout = ViewBindings.findChildViewById(rootView, id);
       if (btnLogout == null) {
+        break missingId;
+      }
+
+      id = R.id.btnSave;
+      MaterialButton btnSave = ViewBindings.findChildViewById(rootView, id);
+      if (btnSave == null) {
+        break missingId;
+      }
+
+      id = R.id.etFullName;
+      TextInputEditText etFullName = ViewBindings.findChildViewById(rootView, id);
+      if (etFullName == null) {
+        break missingId;
+      }
+
+      id = R.id.etStudentId;
+      TextInputEditText etStudentId = ViewBindings.findChildViewById(rootView, id);
+      if (etStudentId == null) {
+        break missingId;
+      }
+
+      id = R.id.progressBar;
+      ProgressBar progressBar = ViewBindings.findChildViewById(rootView, id);
+      if (progressBar == null) {
+        break missingId;
+      }
+
+      id = R.id.tilFullName;
+      TextInputLayout tilFullName = ViewBindings.findChildViewById(rootView, id);
+      if (tilFullName == null) {
+        break missingId;
+      }
+
+      id = R.id.tilStudentId;
+      TextInputLayout tilStudentId = ViewBindings.findChildViewById(rootView, id);
+      if (tilStudentId == null) {
         break missingId;
       }
 
@@ -88,14 +171,9 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tvUserName;
-      TextView tvUserName = ViewBindings.findChildViewById(rootView, id);
-      if (tvUserName == null) {
-        break missingId;
-      }
-
-      return new FragmentProfileBinding((ConstraintLayout) rootView, btnLogout, toolbar,
-          tvUserEmail, tvUserName);
+      return new FragmentProfileBinding((ConstraintLayout) rootView, btnChangePassword,
+          btnDeleteAccount, btnLogout, btnSave, etFullName, etStudentId, progressBar, tilFullName,
+          tilStudentId, toolbar, tvUserEmail);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

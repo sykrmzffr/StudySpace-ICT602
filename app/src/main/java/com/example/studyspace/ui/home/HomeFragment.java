@@ -2,6 +2,8 @@ package com.example.studyspace.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private FirebaseFirestore firestore;
     private RoomAdapter roomAdapter;
+    private List<Room> allRooms = new ArrayList<>();
 
     @Nullable
     @Override
@@ -47,7 +50,40 @@ public class HomeFragment extends Fragment {
         firestore = FirebaseFirestore.getInstance();
 
         setupRecyclerView();
+        setupSearch();
         fetchRooms();
+    }
+
+    private void setupSearch() {
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterRooms(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void filterRooms(String query) {
+        if (query.trim().isEmpty()) {
+            roomAdapter.updateData(allRooms);
+            return;
+        }
+
+        String lowerQuery = query.toLowerCase();
+        List<Room> filteredRooms = new ArrayList<>();
+        for (Room room : allRooms) {
+            if (room.getName() != null && room.getName().toLowerCase().contains(lowerQuery) ||
+                room.getLocation() != null && room.getLocation().toLowerCase().contains(lowerQuery)) {
+                filteredRooms.add(room);
+            }
+        }
+        roomAdapter.updateData(filteredRooms);
     }
 
     private void setupRecyclerView() {
@@ -81,8 +117,8 @@ public class HomeFragment extends Fragment {
                         }
 
                         if (snapshot != null && !snapshot.isEmpty()) {
-                            List<Room> rooms = snapshot.toObjects(Room.class);
-                            roomAdapter.updateData(rooms);
+                            allRooms = snapshot.toObjects(Room.class);
+                            filterRooms(binding.etSearch.getText() != null ? binding.etSearch.getText().toString() : "");
                         } else {
                             seedDummyRooms();
                         }

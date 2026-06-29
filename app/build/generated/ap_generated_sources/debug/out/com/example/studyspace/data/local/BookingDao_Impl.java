@@ -4,6 +4,7 @@ import android.database.Cursor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
@@ -30,6 +31,8 @@ public final class BookingDao_Impl implements BookingDao {
 
   private final EntityInsertionAdapter<Booking> __insertionAdapterOfBooking;
 
+  private final EntityDeletionOrUpdateAdapter<Booking> __deletionAdapterOfBooking;
+
   private final SharedSQLiteStatement __preparedStmtOfClearUserBookings;
 
   public BookingDao_Impl(@NonNull final RoomDatabase __db) {
@@ -38,15 +41,15 @@ public final class BookingDao_Impl implements BookingDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `bookings_table` (`id`,`userId`,`roomId`,`roomName`,`date`,`startTime`,`endTime`,`status`,`checkedIn`) VALUES (?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `bookings_table` (`bookingId`,`userId`,`roomId`,`roomName`,`roomLocation`,`date`,`startTime`,`endTime`,`status`,`checkedIn`) VALUES (?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement, final Booking entity) {
-        if (entity.getId() == null) {
+        if (entity.getBookingId() == null) {
           statement.bindNull(1);
         } else {
-          statement.bindString(1, entity.getId());
+          statement.bindString(1, entity.getBookingId());
         }
         if (entity.getUserId() == null) {
           statement.bindNull(2);
@@ -63,28 +66,49 @@ public final class BookingDao_Impl implements BookingDao {
         } else {
           statement.bindString(4, entity.getRoomName());
         }
-        if (entity.getDate() == null) {
+        if (entity.getRoomLocation() == null) {
           statement.bindNull(5);
         } else {
-          statement.bindString(5, entity.getDate());
+          statement.bindString(5, entity.getRoomLocation());
         }
-        if (entity.getStartTime() == null) {
+        if (entity.getDate() == null) {
           statement.bindNull(6);
         } else {
-          statement.bindString(6, entity.getStartTime());
+          statement.bindString(6, entity.getDate());
         }
-        if (entity.getEndTime() == null) {
+        if (entity.getStartTime() == null) {
           statement.bindNull(7);
         } else {
-          statement.bindString(7, entity.getEndTime());
+          statement.bindString(7, entity.getStartTime());
         }
-        if (entity.getStatus() == null) {
+        if (entity.getEndTime() == null) {
           statement.bindNull(8);
         } else {
-          statement.bindString(8, entity.getStatus());
+          statement.bindString(8, entity.getEndTime());
+        }
+        if (entity.getStatus() == null) {
+          statement.bindNull(9);
+        } else {
+          statement.bindString(9, entity.getStatus());
         }
         final int _tmp = entity.isCheckedIn() ? 1 : 0;
-        statement.bindLong(9, _tmp);
+        statement.bindLong(10, _tmp);
+      }
+    };
+    this.__deletionAdapterOfBooking = new EntityDeletionOrUpdateAdapter<Booking>(__db) {
+      @Override
+      @NonNull
+      protected String createQuery() {
+        return "DELETE FROM `bookings_table` WHERE `bookingId` = ?";
+      }
+
+      @Override
+      protected void bind(@NonNull final SupportSQLiteStatement statement, final Booking entity) {
+        if (entity.getBookingId() == null) {
+          statement.bindNull(1);
+        } else {
+          statement.bindString(1, entity.getBookingId());
+        }
       }
     };
     this.__preparedStmtOfClearUserBookings = new SharedSQLiteStatement(__db) {
@@ -115,6 +139,18 @@ public final class BookingDao_Impl implements BookingDao {
     __db.beginTransaction();
     try {
       __insertionAdapterOfBooking.insert(bookings);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void deleteBooking(final Booking booking) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __deletionAdapterOfBooking.handle(booking);
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
@@ -160,10 +196,11 @@ public final class BookingDao_Impl implements BookingDao {
       public List<Booking> call() throws Exception {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
-          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfBookingId = CursorUtil.getColumnIndexOrThrow(_cursor, "bookingId");
           final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "userId");
           final int _cursorIndexOfRoomId = CursorUtil.getColumnIndexOrThrow(_cursor, "roomId");
           final int _cursorIndexOfRoomName = CursorUtil.getColumnIndexOrThrow(_cursor, "roomName");
+          final int _cursorIndexOfRoomLocation = CursorUtil.getColumnIndexOrThrow(_cursor, "roomLocation");
           final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
           final int _cursorIndexOfStartTime = CursorUtil.getColumnIndexOrThrow(_cursor, "startTime");
           final int _cursorIndexOfEndTime = CursorUtil.getColumnIndexOrThrow(_cursor, "endTime");
@@ -173,13 +210,13 @@ public final class BookingDao_Impl implements BookingDao {
           while (_cursor.moveToNext()) {
             final Booking _item;
             _item = new Booking();
-            final String _tmpId;
-            if (_cursor.isNull(_cursorIndexOfId)) {
-              _tmpId = null;
+            final String _tmpBookingId;
+            if (_cursor.isNull(_cursorIndexOfBookingId)) {
+              _tmpBookingId = null;
             } else {
-              _tmpId = _cursor.getString(_cursorIndexOfId);
+              _tmpBookingId = _cursor.getString(_cursorIndexOfBookingId);
             }
-            _item.setId(_tmpId);
+            _item.setBookingId(_tmpBookingId);
             final String _tmpUserId;
             if (_cursor.isNull(_cursorIndexOfUserId)) {
               _tmpUserId = null;
@@ -201,6 +238,13 @@ public final class BookingDao_Impl implements BookingDao {
               _tmpRoomName = _cursor.getString(_cursorIndexOfRoomName);
             }
             _item.setRoomName(_tmpRoomName);
+            final String _tmpRoomLocation;
+            if (_cursor.isNull(_cursorIndexOfRoomLocation)) {
+              _tmpRoomLocation = null;
+            } else {
+              _tmpRoomLocation = _cursor.getString(_cursorIndexOfRoomLocation);
+            }
+            _item.setRoomLocation(_tmpRoomLocation);
             final String _tmpDate;
             if (_cursor.isNull(_cursorIndexOfDate)) {
               _tmpDate = null;

@@ -20,11 +20,12 @@ public class Booking {
     @DocumentId
     @PrimaryKey
     @NonNull
-    private String id = "";
+    private String bookingId = "";
     
     private String userId = "";
     private String roomId = "";
     private String roomName = "";
+    private String roomLocation = "";
     private String date = "";
     private String startTime = "";
     private String endTime = "";
@@ -36,11 +37,12 @@ public class Booking {
 
     public Booking() {}
 
-    public Booking(@NonNull String id, String userId, String roomId, String roomName, String date, String startTime, String endTime, String status, boolean checkedIn) {
-        this.id = id;
+    public Booking(@NonNull String bookingId, String userId, String roomId, String roomName, String roomLocation, String date, String startTime, String endTime, String status, boolean checkedIn) {
+        this.bookingId = bookingId;
         this.userId = userId;
         this.roomId = roomId;
         this.roomName = roomName;
+        this.roomLocation = roomLocation;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -49,8 +51,8 @@ public class Booking {
     }
 
     @NonNull
-    public String getId() { return id; }
-    public void setId(@NonNull String id) { this.id = id; }
+    public String getBookingId() { return bookingId; }
+    public void setBookingId(@NonNull String bookingId) { this.bookingId = bookingId; }
 
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
@@ -60,6 +62,9 @@ public class Booking {
 
     public String getRoomName() { return roomName; }
     public void setRoomName(String roomName) { this.roomName = roomName; }
+    
+    public String getRoomLocation() { return roomLocation; }
+    public void setRoomLocation(String roomLocation) { this.roomLocation = roomLocation; }
 
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }

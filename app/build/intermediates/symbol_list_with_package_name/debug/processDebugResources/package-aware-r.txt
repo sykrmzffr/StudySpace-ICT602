@@ -3359,11 +3359,15 @@ id browser_actions_menu_items
 id browser_actions_menu_view
 id btnBack
 id btnBook
+id btnCancel
+id btnChangePassword
 id btnCheckIn
+id btnDeleteAccount
 id btnLogin
 id btnLogout
 id btnNavigate
 id btnRegister
+id btnSave
 id btnSelectDate
 id buttonPanel
 id cache_measures
@@ -3453,9 +3457,12 @@ id enterAlways
 id enterAlwaysCollapsed
 id escape
 id etConfirmPassword
+id etCurrentPassword
 id etEmail
 id etFullName
+id etNewPassword
 id etPassword
+id etSearch
 id etStudentId
 id exitUntilCollapsed
 id expand_activities_button
@@ -3775,9 +3782,12 @@ id textinput_placeholder
 id textinput_prefix_text
 id textinput_suffix_text
 id tilConfirmPassword
+id tilCurrentPassword
 id tilEmail
 id tilFullName
+id tilNewPassword
 id tilPassword
+id tilSearch
 id tilStudentId
 id time
 id title
@@ -3822,7 +3832,6 @@ id tvTime
 id tvTimeLabel
 id tvTitle
 id tvUserEmail
-id tvUserName
 id tvWelcome
 id unchecked
 id uniform
@@ -3989,6 +3998,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout dialog_change_password
 layout fragment_home
 layout fragment_my_bookings
 layout fragment_profile

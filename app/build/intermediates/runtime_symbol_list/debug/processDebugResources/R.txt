@@ -3358,11 +3358,15 @@ int id browser_actions_menu_items 0x7f080069
 int id browser_actions_menu_view 0x7f08006a
 int id btnBack 0x7f08006b
 int id btnBook 0x7f08006c
+int id btnCancel 0x7f08025e
+int id btnChangePassword 0x7f080257
 int id btnCheckIn 0x7f08006d
+int id btnDeleteAccount 0x7f080258
 int id btnLogin 0x7f08006e
 int id btnLogout 0x7f08006f
 int id btnNavigate 0x7f080070
 int id btnRegister 0x7f080071
+int id btnSave 0x7f080259
 int id btnSelectDate 0x7f080072
 int id buttonPanel 0x7f080073
 int id cache_measures 0x7f080074
@@ -3452,9 +3456,12 @@ int id enterAlways 0x7f0800c7
 int id enterAlwaysCollapsed 0x7f0800c8
 int id escape 0x7f0800c9
 int id etConfirmPassword 0x7f0800ca
+int id etCurrentPassword 0x7f08025a
 int id etEmail 0x7f0800cb
 int id etFullName 0x7f0800cc
+int id etNewPassword 0x7f08025b
 int id etPassword 0x7f0800cd
+int id etSearch 0x7f08025f
 int id etStudentId 0x7f0800ce
 int id exitUntilCollapsed 0x7f0800cf
 int id expand_activities_button 0x7f0800d0
@@ -3774,9 +3781,12 @@ int id textinput_placeholder 0x7f080209
 int id textinput_prefix_text 0x7f08020a
 int id textinput_suffix_text 0x7f08020b
 int id tilConfirmPassword 0x7f08020c
+int id tilCurrentPassword 0x7f08025c
 int id tilEmail 0x7f08020d
 int id tilFullName 0x7f08020e
+int id tilNewPassword 0x7f08025d
 int id tilPassword 0x7f08020f
+int id tilSearch 0x7f080260
 int id tilStudentId 0x7f080210
 int id time 0x7f080211
 int id title 0x7f080212
@@ -3821,7 +3831,6 @@ int id tvTime 0x7f080238
 int id tvTimeLabel 0x7f080239
 int id tvTitle 0x7f08023a
 int id tvUserEmail 0x7f08023b
-int id tvUserName 0x7f08023c
 int id tvWelcome 0x7f08023d
 int id unchecked 0x7f08023e
 int id uniform 0x7f08023f
@@ -3988,6 +3997,7 @@ int layout design_navigation_menu 0x7f0b0030
 int layout design_navigation_menu_item 0x7f0b0031
 int layout design_text_input_end_icon 0x7f0b0032
 int layout design_text_input_start_icon 0x7f0b0033
+int layout dialog_change_password 0x7f0b0078
 int layout fragment_home 0x7f0b0034
 int layout fragment_my_bookings 0x7f0b0035
 int layout fragment_profile 0x7f0b0036

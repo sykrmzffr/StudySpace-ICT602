@@ -22,6 +22,9 @@ public final class ItemBookingBinding implements ViewBinding {
   private final MaterialCardView rootView;
 
   @NonNull
+  public final MaterialButton btnCancel;
+
+  @NonNull
   public final MaterialButton btnCheckIn;
 
   @NonNull
@@ -42,10 +45,12 @@ public final class ItemBookingBinding implements ViewBinding {
   @NonNull
   public final TextView tvTime;
 
-  private ItemBookingBinding(@NonNull MaterialCardView rootView, @NonNull MaterialButton btnCheckIn,
-      @NonNull ImageView ivDate, @NonNull ImageView ivTime, @NonNull TextView tvDate,
-      @NonNull TextView tvRoomName, @NonNull TextView tvStatus, @NonNull TextView tvTime) {
+  private ItemBookingBinding(@NonNull MaterialCardView rootView, @NonNull MaterialButton btnCancel,
+      @NonNull MaterialButton btnCheckIn, @NonNull ImageView ivDate, @NonNull ImageView ivTime,
+      @NonNull TextView tvDate, @NonNull TextView tvRoomName, @NonNull TextView tvStatus,
+      @NonNull TextView tvTime) {
     this.rootView = rootView;
+    this.btnCancel = btnCancel;
     this.btnCheckIn = btnCheckIn;
     this.ivDate = ivDate;
     this.ivTime = ivTime;
@@ -82,6 +87,12 @@ public final class ItemBookingBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnCancel;
+      MaterialButton btnCancel = ViewBindings.findChildViewById(rootView, id);
+      if (btnCancel == null) {
+        break missingId;
+      }
+
       id = R.id.btnCheckIn;
       MaterialButton btnCheckIn = ViewBindings.findChildViewById(rootView, id);
       if (btnCheckIn == null) {
@@ -124,8 +135,8 @@ public final class ItemBookingBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemBookingBinding((MaterialCardView) rootView, btnCheckIn, ivDate, ivTime, tvDate,
-          tvRoomName, tvStatus, tvTime);
+      return new ItemBookingBinding((MaterialCardView) rootView, btnCancel, btnCheckIn, ivDate,
+          ivTime, tvDate, tvRoomName, tvStatus, tvTime);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

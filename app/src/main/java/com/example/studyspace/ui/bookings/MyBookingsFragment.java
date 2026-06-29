@@ -20,6 +20,7 @@ import com.example.studyspace.ui.qr.QrCheckInActivity;
 import com.example.studyspace.utils.NetworkUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -94,12 +95,17 @@ public class MyBookingsFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        bookingAdapter = new BookingAdapter(new BookingAdapter.OnCheckInClickListener() {
+        bookingAdapter = new BookingAdapter(new BookingAdapter.BookingClickListener() {
             @Override
             public void onCheckInClick(Booking booking) {
                 Intent intent = new Intent(requireContext(), QrCheckInActivity.class);
-                intent.putExtra("EXTRA_BOOKING_ID", booking.getId());
+                intent.putExtra("EXTRA_BOOKING_ID", booking.getBookingId());
                 startActivity(intent);
+            }
+
+            @Override
+            public void onCancelClick(Booking booking) {
+                cancelBooking(booking);
             }
         });
         binding.recyclerViewBookings.setAdapter(bookingAdapter);
@@ -144,6 +150,39 @@ public class MyBookingsFragment extends Fragment {
                         showSnackbar("Failed to sync bookings.");
                     }
                 });
+    }
+
+    private void cancelBooking(Booking booking) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Cancel Booking")
+                .setMessage("Are you sure you want to cancel your booking for " + booking.getRoomName() + "?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    if (!NetworkUtils.isConnected(requireContext())) {
+                        showSnackbar("No internet connection.");
+                        return;
+                    }
+                    
+                    binding.swipeRefresh.setRefreshing(true);
+                    firestore.collection("bookings").document(booking.getBookingId())
+                            .delete()
+                            .addOnSuccessListener(unused -> {
+                                executorService.execute(() -> {
+                                    database.bookingDao().deleteBooking(booking);
+                                    if (getActivity() != null) {
+                                        getActivity().runOnUiThread(() -> {
+                                            binding.swipeRefresh.setRefreshing(false);
+                                            showSnackbar("Booking cancelled.");
+                                        });
+                                    }
+                                });
+                            })
+                            .addOnFailureListener(e -> {
+                                binding.swipeRefresh.setRefreshing(false);
+                                showSnackbar("Failed to cancel booking: " + e.getMessage());
+                            });
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private void showSnackbar(String message) {

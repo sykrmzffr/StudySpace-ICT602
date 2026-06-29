@@ -16,6 +16,26 @@
         app:titleTextColor="@color/white"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Search Bar -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSearch"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        app:startIconDrawable="@android:drawable/ic_menu_search"
+        android:hint="Search Rooms"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- RecyclerView for Rooms List (T02) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRooms"
@@ -25,7 +45,7 @@
         android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/tilSearch"
         tools:listitem="@layout/item_room" />
 
     <!-- Loading Indicator -->

@@ -96,20 +96,39 @@
             app:layout_constraintTop_toTopOf="@id/ivTime"
             tools:text="10:00 AM - 12:00 PM" />
 
-        <!-- Check-In Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCheckIn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="16dp"
-            android:text="SCAN QR TO CHECK IN"
-            android:textColor="@color/white"
-            app:backgroundTint="@color/primary"
-            app:cornerRadius="8dp"
-            app:icon="@android:drawable/ic_menu_camera"
-            app:iconGravity="textStart"
-            app:iconTint="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/ivTime" />
+            app:layout_constraintTop_toBottomOf="@id/ivTime">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="CANCEL"
+                android:textColor="@color/error"
+                app:strokeColor="@color/error"
+                app:cornerRadius="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCheckIn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="CHECK IN"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="8dp"
+                app:icon="@android:drawable/ic_menu_camera"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
