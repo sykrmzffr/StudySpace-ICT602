@@ -1,50 +1,46 @@
 [
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\activity_login.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_login.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/activity_room_detail.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/activity_room_detail.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\activity_room_detail.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_room_detail.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/activity_login.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/activity_login.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\fragment_home.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\fragment_home.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/activity_register.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/activity_register.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\activity_qr_check_in.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_qr_check_in.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/fragment_home.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/fragment_home.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\item_room.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\item_room.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/fragment_my_bookings.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/fragment_my_bookings.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\fragment_profile.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\fragment_profile.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/activity_maps.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/activity_maps.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\activity_main.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_main.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/fragment_profile.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/fragment_profile.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\item_booking.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\item_booking.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/item_room.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/item_room.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\fragment_my_bookings.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\fragment_my_bookings.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/activity_qr_check_in.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/activity_qr_check_in.xml"
     },
     {
-        "merged": "com.example.studyspace.app-mergeReleaseResources-68:/layout/activity_room_detail.xml",
-        "source": "com.example.studyspace.app-main-70:/layout/activity_room_detail.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/activity_main.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\activity_register.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_register.xml"
-    },
-    {
-        "merged": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-mergeReleaseResources-68:\\layout\\activity_maps.xml",
-        "source": "C:\\Users\\syakir\\.gradle\\daemon\\8.12\\com.example.studyspace.app-main-70:\\layout\\activity_maps.xml"
+        "merged": "com.example.studyspace.app-mergeReleaseResources-67:/layout/item_booking.xml",
+        "source": "com.example.studyspace.app-main-69:/layout/item_booking.xml"
     }
 ]
