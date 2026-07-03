@@ -31,12 +31,12 @@ public final class StudyDatabase_Impl extends StudyDatabase {
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(3) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(4) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `bookings_table` (`bookingId` TEXT NOT NULL, `userId` TEXT, `roomId` TEXT, `roomName` TEXT, `roomLocation` TEXT, `date` TEXT, `startTime` TEXT, `endTime` TEXT, `status` TEXT, `checkedIn` INTEGER NOT NULL, PRIMARY KEY(`bookingId`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `bookings_table` (`bookingId` TEXT NOT NULL, `userId` TEXT, `roomId` TEXT, `roomName` TEXT, `roomLocation` TEXT, `date` TEXT, `startTime` TEXT, `endTime` TEXT, `status` TEXT, `checkedIn` INTEGER NOT NULL, `isPendingSync` INTEGER NOT NULL, PRIMARY KEY(`bookingId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5e08e449c7b4ed0b77b13d3c3a993382')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f50a0d22f6b18f859a25272f95bf9686')");
       }
 
       @Override
@@ -85,7 +85,7 @@ public final class StudyDatabase_Impl extends StudyDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsBookingsTable = new HashMap<String, TableInfo.Column>(10);
+        final HashMap<String, TableInfo.Column> _columnsBookingsTable = new HashMap<String, TableInfo.Column>(11);
         _columnsBookingsTable.put("bookingId", new TableInfo.Column("bookingId", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBookingsTable.put("userId", new TableInfo.Column("userId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBookingsTable.put("roomId", new TableInfo.Column("roomId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -96,6 +96,7 @@ public final class StudyDatabase_Impl extends StudyDatabase {
         _columnsBookingsTable.put("endTime", new TableInfo.Column("endTime", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBookingsTable.put("status", new TableInfo.Column("status", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsBookingsTable.put("checkedIn", new TableInfo.Column("checkedIn", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsBookingsTable.put("isPendingSync", new TableInfo.Column("isPendingSync", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysBookingsTable = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesBookingsTable = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoBookingsTable = new TableInfo("bookings_table", _columnsBookingsTable, _foreignKeysBookingsTable, _indicesBookingsTable);
@@ -107,7 +108,7 @@ public final class StudyDatabase_Impl extends StudyDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "5e08e449c7b4ed0b77b13d3c3a993382", "178737ab394b84a1417da99268628a99");
+    }, "f50a0d22f6b18f859a25272f95bf9686", "cc0e432f0aed25cea5a60976dd546d68");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

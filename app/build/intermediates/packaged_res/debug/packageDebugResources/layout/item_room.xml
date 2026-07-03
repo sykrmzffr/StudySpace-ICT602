@@ -16,8 +16,23 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
+
+        <!-- Room Image -->
+        <ImageView
+            android:id="@+id/ivRoomImage"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            android:background="@color/surface"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Content Container -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/ivRoomImage">
 
         <!-- Room Name -->
         <TextView
@@ -91,11 +106,25 @@
             android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/ivCapacity"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvDistance"
             app:layout_constraintStart_toEndOf="@id/ivCapacity"
             app:layout_constraintTop_toTopOf="@id/ivCapacity"
             tools:text="Capacity: 4 people" />
 
+        <!-- Distance Icon & Text -->
+        <TextView
+            android:id="@+id/tvDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivCapacity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivCapacity"
+            tools:text="1.2 km" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

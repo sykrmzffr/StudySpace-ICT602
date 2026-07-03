@@ -24,6 +24,7 @@
 
     <!-- T06 — Notifications: Firebase Cloud Messaging (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -76,6 +77,9 @@
             android:name=".ui.detail.RoomDetailActivity"
             android:exported="false" />
 
+        <!-- Notification Receiver for local reminders -->
+        <receiver android:name=".service.NotificationReceiver" android:exported="false" />
+
         <!-- T06 — Firebase Cloud Messaging Service -->
         <service
             android:name=".service.StudySpaceFCMService"
@@ -92,7 +96,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDIDF_sPcKB7lGVuRWV4irKRrEFlsADfA4" />
+            android:value="${MAPS_API_KEY}" />
 
     </application>
 

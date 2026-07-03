@@ -38,4 +38,8 @@ public interface BookingDao {
     // T03 - Clear old cache
     @Query("DELETE FROM bookings_table WHERE userId = :userId")
     void clearUserBookings(String userId);
+
+    // Get pending bookings for sync
+    @Query("SELECT * FROM bookings_table WHERE isPendingSync = 1")
+    List<Booking> getPendingBookings();
 }

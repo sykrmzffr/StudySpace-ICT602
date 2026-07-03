@@ -66,7 +66,11 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             binding.tvTime.setText(booking.getStartTime() + " - " + booking.getEndTime());
             binding.tvStatus.setText(booking.getStatus().toUpperCase());
 
-            if (booking.getStatus().equalsIgnoreCase("Confirmed") || booking.getStatus().equalsIgnoreCase("Checked In")) {
+            if (booking.isPendingSync()) {
+                binding.tvStatus.setText(booking.getStatus().toUpperCase() + " (PENDING SYNC)");
+                binding.tvStatus.setBackgroundResource(android.R.color.holo_orange_light);
+                binding.tvStatus.setTextColor(binding.getRoot().getContext().getColor(android.R.color.white));
+            } else if (booking.getStatus().equalsIgnoreCase("Confirmed") || booking.getStatus().equalsIgnoreCase("Checked In")) {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_available);
                 binding.tvStatus.setTextColor(binding.getRoot().getContext().getColor(android.R.color.white));
             } else {
@@ -74,7 +78,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             }
 
             // Phase 5: Check-in button logic
-            if (booking.getStatus().equalsIgnoreCase("Checked In")) {
+            if (booking.getStatus().equalsIgnoreCase("Checked In") || booking.isPendingSync()) {
                 binding.btnCheckIn.setVisibility(View.GONE);
                 binding.btnCancel.setVisibility(View.GONE);
             } else {

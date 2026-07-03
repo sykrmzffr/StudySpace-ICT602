@@ -6,6 +6,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 /**
  * Booking Data Model
@@ -31,6 +32,7 @@ public class Booking {
     private String endTime = "";
     private String status = "Pending";
     private boolean checkedIn = false;
+    private boolean isPendingSync = false;
 
     @Ignore
     private Timestamp createdAt;
@@ -83,4 +85,9 @@ public class Booking {
 
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    @Exclude
+    public boolean isPendingSync() { return isPendingSync; }
+    @Exclude
+    public void setPendingSync(boolean pendingSync) { isPendingSync = pendingSync; }
 }

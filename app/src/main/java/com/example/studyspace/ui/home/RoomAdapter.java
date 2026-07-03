@@ -79,6 +79,27 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_booked);
             }
 
+            if (room.distanceToUser > 0) {
+                binding.tvDistance.setVisibility(View.VISIBLE);
+                if (room.distanceToUser >= 1000) {
+                    binding.tvDistance.setText(String.format(java.util.Locale.getDefault(), "%.1f km", room.distanceToUser / 1000f));
+                } else {
+                    binding.tvDistance.setText(String.format(java.util.Locale.getDefault(), "%.0f m", room.distanceToUser));
+                }
+            } else {
+                binding.tvDistance.setVisibility(View.GONE);
+            }
+
+            if (room.getImageUrl() != null && !room.getImageUrl().isEmpty()) {
+                binding.ivRoomImage.setVisibility(View.VISIBLE);
+                com.bumptech.glide.Glide.with(context)
+                        .load(room.getImageUrl())
+                        .centerCrop()
+                        .into(binding.ivRoomImage);
+            } else {
+                binding.ivRoomImage.setVisibility(View.GONE);
+            }
+
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

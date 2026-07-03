@@ -27,7 +27,13 @@ public final class ItemRoomBinding implements ViewBinding {
   public final ImageView ivLocation;
 
   @NonNull
+  public final ImageView ivRoomImage;
+
+  @NonNull
   public final TextView tvCapacity;
+
+  @NonNull
+  public final TextView tvDistance;
 
   @NonNull
   public final TextView tvLocation;
@@ -39,12 +45,15 @@ public final class ItemRoomBinding implements ViewBinding {
   public final TextView tvStatus;
 
   private ItemRoomBinding(@NonNull MaterialCardView rootView, @NonNull ImageView ivCapacity,
-      @NonNull ImageView ivLocation, @NonNull TextView tvCapacity, @NonNull TextView tvLocation,
-      @NonNull TextView tvRoomName, @NonNull TextView tvStatus) {
+      @NonNull ImageView ivLocation, @NonNull ImageView ivRoomImage, @NonNull TextView tvCapacity,
+      @NonNull TextView tvDistance, @NonNull TextView tvLocation, @NonNull TextView tvRoomName,
+      @NonNull TextView tvStatus) {
     this.rootView = rootView;
     this.ivCapacity = ivCapacity;
     this.ivLocation = ivLocation;
+    this.ivRoomImage = ivRoomImage;
     this.tvCapacity = tvCapacity;
+    this.tvDistance = tvDistance;
     this.tvLocation = tvLocation;
     this.tvRoomName = tvRoomName;
     this.tvStatus = tvStatus;
@@ -89,9 +98,21 @@ public final class ItemRoomBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.ivRoomImage;
+      ImageView ivRoomImage = ViewBindings.findChildViewById(rootView, id);
+      if (ivRoomImage == null) {
+        break missingId;
+      }
+
       id = R.id.tvCapacity;
       TextView tvCapacity = ViewBindings.findChildViewById(rootView, id);
       if (tvCapacity == null) {
+        break missingId;
+      }
+
+      id = R.id.tvDistance;
+      TextView tvDistance = ViewBindings.findChildViewById(rootView, id);
+      if (tvDistance == null) {
         break missingId;
       }
 
@@ -113,8 +134,8 @@ public final class ItemRoomBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemRoomBinding((MaterialCardView) rootView, ivCapacity, ivLocation, tvCapacity,
-          tvLocation, tvRoomName, tvStatus);
+      return new ItemRoomBinding((MaterialCardView) rootView, ivCapacity, ivLocation, ivRoomImage,
+          tvCapacity, tvDistance, tvLocation, tvRoomName, tvStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -24,6 +24,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+import com.example.studyspace.data.local.StudyDatabase;
+import com.example.studyspace.data.model.Booking;
+import com.example.studyspace.service.NotificationReceiver;
+import com.example.studyspace.service.SyncWorker;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -111,7 +125,12 @@ public class RoomDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent mapIntent = new Intent(RoomDetailActivity.this, MapsActivity.class);
+                mapIntent.putExtra("MODE", "ROUTING");
                 mapIntent.putExtra("EXTRA_ROOM_NAME", selectedRoom != null ? selectedRoom.getName() : "Room");
+                if (selectedRoom != null) {
+                    mapIntent.putExtra("EXTRA_ROOM_LAT", selectedRoom.getLat());
+                    mapIntent.putExtra("EXTRA_ROOM_LNG", selectedRoom.getLng());
+                }
                 startActivity(mapIntent);
             }
         });
@@ -247,11 +266,6 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     private void performBooking() {
-        if (!NetworkUtils.isConnected(this)) {
-            showSnackbar(getString(R.string.error_no_internet));
-            return;
-        }
-
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser == null) {
             showSnackbar("Please log in to book a room.");
@@ -269,22 +283,53 @@ public class RoomDetailActivity extends AppCompatActivity {
         String startTime = timeParts.length > 0 ? timeParts[0] : selectedTime;
         String endTime = timeParts.length > 1 ? timeParts[1] : "";
 
-        Map<String, Object> bookingData = new HashMap<>();
-        bookingData.put("userId", currentUser.getUid());
-        bookingData.put("roomId", roomId);
-        bookingData.put("roomName", selectedRoom != null ? selectedRoom.getName() : "Unknown Room");
-        bookingData.put("date", selectedDateStr);
-        bookingData.put("startTime", startTime);
-        bookingData.put("endTime", endTime);
-        bookingData.put("status", "Confirmed");
-        bookingData.put("checkedIn", false);
-        bookingData.put("createdAt", Timestamp.now());
+        String roomName = selectedRoom != null ? selectedRoom.getName() : "Unknown Room";
+        String roomLocation = selectedRoom != null ? selectedRoom.getLocation() : "";
+
+        if (!NetworkUtils.isConnected(this)) {
+            // Offline Mode: Queue booking locally
+            String generatedId = UUID.randomUUID().toString();
+            Booking offlineBooking = new Booking(generatedId, currentUser.getUid(), roomId, roomName, roomLocation, selectedDateStr, startTime, endTime, "Pending", false);
+            offlineBooking.setPendingSync(true);
+            offlineBooking.setCreatedAt(Timestamp.now());
+
+            Executors.newSingleThreadExecutor().execute(() -> {
+                StudyDatabase.getDatabase(getApplicationContext()).bookingDao().insertBooking(offlineBooking);
+                
+                // Enqueue SyncWorker
+                Constraints constraints = new Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build();
+                OneTimeWorkRequest syncRequest = new OneTimeWorkRequest.Builder(SyncWorker.class)
+                        .setConstraints(constraints)
+                        .build();
+                WorkManager.getInstance(getApplicationContext()).enqueue(syncRequest);
+
+                runOnUiThread(() -> {
+                    scheduleNotification(roomName, selectedDateStr, startTime, endTime);
+                    binding.progressBar.setVisibility(View.GONE);
+                    showSnackbar("Offline: Booking queued for sync.");
+                    binding.getRoot().postDelayed(this::finish, 1500);
+                });
+            });
+            return;
+        }
+
+        // Online Mode: Normal booking
+        Booking newBooking = new Booking("", currentUser.getUid(), roomId, roomName, roomLocation, selectedDateStr, startTime, endTime, "Confirmed", false);
+        newBooking.setCreatedAt(Timestamp.now());
 
         firestore.collection("bookings")
-                .add(bookingData)
+                .add(newBooking)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        newBooking.setBookingId(documentReference.getId());
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            StudyDatabase.getDatabase(getApplicationContext()).bookingDao().insertBooking(newBooking);
+                        });
+
+                        scheduleNotification(roomName, selectedDateStr, startTime, endTime);
                         binding.progressBar.setVisibility(View.GONE);
                         showSnackbar("Room booked successfully!");
                         
@@ -304,6 +349,62 @@ public class RoomDetailActivity extends AppCompatActivity {
                         showSnackbar("Failed to book room: " + e.getMessage());
                     }
                 });
+    }
+
+    private void scheduleNotification(String roomName, String dateStr, String startTime, String endTime) {
+        try {
+            // Immediate Confirmation Notification
+            Intent confirmIntent = new Intent(this, NotificationReceiver.class);
+            confirmIntent.putExtra("ROOM_NAME", roomName);
+            confirmIntent.putExtra("NOTIFICATION_TYPE", "CONFIRM");
+            sendBroadcast(confirmIntent);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+            
+            // Start Reminder (15 mins before)
+            java.util.Date startDate = sdf.parse(dateStr + " " + startTime);
+            if (startDate != null) {
+                long startTriggerTime = startDate.getTime() - (15 * 60 * 1000);
+                if (startTriggerTime > System.currentTimeMillis()) {
+                    setAlarm(startTriggerTime, roomName, "START", 1);
+                }
+            }
+
+            // End Reminder (5 mins before checkout)
+            java.util.Date endDate = sdf.parse(dateStr + " " + endTime);
+            if (endDate != null) {
+                long endTriggerTime = endDate.getTime() - (5 * 60 * 1000);
+                if (endTriggerTime > System.currentTimeMillis()) {
+                    setAlarm(endTriggerTime, roomName, "CHECKOUT", 2);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setAlarm(long triggerTime, String roomName, String type, int requestCode) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        intent.putExtra("ROOM_NAME", roomName);
+        intent.putExtra("NOTIFICATION_TYPE", type);
+        
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                (int) System.currentTimeMillis() + requestCode,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            if (alarmManager != null && alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            } else {
+                if (alarmManager != null) alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            }
+        } else if (alarmManager != null) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        }
     }
 
     private void showSnackbar(String message) {

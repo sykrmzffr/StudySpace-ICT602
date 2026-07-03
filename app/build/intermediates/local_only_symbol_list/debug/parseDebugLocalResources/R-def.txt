@@ -49,8 +49,13 @@ id btnNavigate
 id btnRegister
 id btnSave
 id btnSelectDate
+id btnSortNearest
 id cardDetails
 id cardForm
+id chipAvailable
+id chipGroupFilters
+id chipLarge
+id chipSmall
 id chipStatus
 id etConfirmPassword
 id etCurrentPassword
@@ -61,12 +66,15 @@ id etPassword
 id etSearch
 id etStudentId
 id fabClose
+id fabMap
 id headerImageContainer
 id headerSection
+id hsvFilters
 id ivCapacity
 id ivDate
 id ivLocation
 id ivLogo
+id ivRoomImage
 id ivTime
 id layoutActions
 id map
@@ -95,6 +103,7 @@ id tvBookingHeader
 id tvCapacity
 id tvDate
 id tvDateLabel
+id tvDistance
 id tvEmptyState
 id tvFloor
 id tvForgotPassword
@@ -103,6 +112,7 @@ id tvFormTitle
 id tvGoToLogin
 id tvGoToRegister
 id tvLocation
+id tvOfflineBanner
 id tvRoomLocation
 id tvRoomName
 id tvSelectedDate

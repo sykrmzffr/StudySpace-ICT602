@@ -4,6 +4,8 @@ package com.example.studyspace.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +15,9 @@ import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.studyspace.R;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.lang.NullPointerException;
@@ -24,7 +29,28 @@ public final class FragmentHomeBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
+  public final Button btnSortNearest;
+
+  @NonNull
+  public final Chip chipAvailable;
+
+  @NonNull
+  public final ChipGroup chipGroupFilters;
+
+  @NonNull
+  public final Chip chipLarge;
+
+  @NonNull
+  public final Chip chipSmall;
+
+  @NonNull
   public final TextInputEditText etSearch;
+
+  @NonNull
+  public final FloatingActionButton fabMap;
+
+  @NonNull
+  public final HorizontalScrollView hsvFilters;
 
   @NonNull
   public final ProgressBar progressBar;
@@ -38,12 +64,21 @@ public final class FragmentHomeBinding implements ViewBinding {
   @NonNull
   public final MaterialToolbar toolbar;
 
-  private FragmentHomeBinding(@NonNull ConstraintLayout rootView,
-      @NonNull TextInputEditText etSearch, @NonNull ProgressBar progressBar,
-      @NonNull RecyclerView recyclerViewRooms, @NonNull TextInputLayout tilSearch,
-      @NonNull MaterialToolbar toolbar) {
+  private FragmentHomeBinding(@NonNull ConstraintLayout rootView, @NonNull Button btnSortNearest,
+      @NonNull Chip chipAvailable, @NonNull ChipGroup chipGroupFilters, @NonNull Chip chipLarge,
+      @NonNull Chip chipSmall, @NonNull TextInputEditText etSearch,
+      @NonNull FloatingActionButton fabMap, @NonNull HorizontalScrollView hsvFilters,
+      @NonNull ProgressBar progressBar, @NonNull RecyclerView recyclerViewRooms,
+      @NonNull TextInputLayout tilSearch, @NonNull MaterialToolbar toolbar) {
     this.rootView = rootView;
+    this.btnSortNearest = btnSortNearest;
+    this.chipAvailable = chipAvailable;
+    this.chipGroupFilters = chipGroupFilters;
+    this.chipLarge = chipLarge;
+    this.chipSmall = chipSmall;
     this.etSearch = etSearch;
+    this.fabMap = fabMap;
+    this.hsvFilters = hsvFilters;
     this.progressBar = progressBar;
     this.recyclerViewRooms = recyclerViewRooms;
     this.tilSearch = tilSearch;
@@ -77,9 +112,51 @@ public final class FragmentHomeBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnSortNearest;
+      Button btnSortNearest = ViewBindings.findChildViewById(rootView, id);
+      if (btnSortNearest == null) {
+        break missingId;
+      }
+
+      id = R.id.chipAvailable;
+      Chip chipAvailable = ViewBindings.findChildViewById(rootView, id);
+      if (chipAvailable == null) {
+        break missingId;
+      }
+
+      id = R.id.chipGroupFilters;
+      ChipGroup chipGroupFilters = ViewBindings.findChildViewById(rootView, id);
+      if (chipGroupFilters == null) {
+        break missingId;
+      }
+
+      id = R.id.chipLarge;
+      Chip chipLarge = ViewBindings.findChildViewById(rootView, id);
+      if (chipLarge == null) {
+        break missingId;
+      }
+
+      id = R.id.chipSmall;
+      Chip chipSmall = ViewBindings.findChildViewById(rootView, id);
+      if (chipSmall == null) {
+        break missingId;
+      }
+
       id = R.id.etSearch;
       TextInputEditText etSearch = ViewBindings.findChildViewById(rootView, id);
       if (etSearch == null) {
+        break missingId;
+      }
+
+      id = R.id.fabMap;
+      FloatingActionButton fabMap = ViewBindings.findChildViewById(rootView, id);
+      if (fabMap == null) {
+        break missingId;
+      }
+
+      id = R.id.hsvFilters;
+      HorizontalScrollView hsvFilters = ViewBindings.findChildViewById(rootView, id);
+      if (hsvFilters == null) {
         break missingId;
       }
 
@@ -107,7 +184,8 @@ public final class FragmentHomeBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentHomeBinding((ConstraintLayout) rootView, etSearch, progressBar,
+      return new FragmentHomeBinding((ConstraintLayout) rootView, btnSortNearest, chipAvailable,
+          chipGroupFilters, chipLarge, chipSmall, etSearch, fabMap, hsvFilters, progressBar,
           recyclerViewRooms, tilSearch, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);

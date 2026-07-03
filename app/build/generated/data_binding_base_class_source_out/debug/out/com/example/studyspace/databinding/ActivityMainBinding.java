@@ -4,6 +4,7 @@ package com.example.studyspace.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,12 +27,16 @@ public final class ActivityMainBinding implements ViewBinding {
   @NonNull
   public final FragmentContainerView navHostFragment;
 
+  @NonNull
+  public final TextView tvOfflineBanner;
+
   private ActivityMainBinding(@NonNull ConstraintLayout rootView,
       @NonNull BottomNavigationView bottomNavigation,
-      @NonNull FragmentContainerView navHostFragment) {
+      @NonNull FragmentContainerView navHostFragment, @NonNull TextView tvOfflineBanner) {
     this.rootView = rootView;
     this.bottomNavigation = bottomNavigation;
     this.navHostFragment = navHostFragment;
+    this.tvOfflineBanner = tvOfflineBanner;
   }
 
   @Override
@@ -73,8 +78,14 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityMainBinding((ConstraintLayout) rootView, bottomNavigation,
-          navHostFragment);
+      id = R.id.tvOfflineBanner;
+      TextView tvOfflineBanner = ViewBindings.findChildViewById(rootView, id);
+      if (tvOfflineBanner == null) {
+        break missingId;
+      }
+
+      return new ActivityMainBinding((ConstraintLayout) rootView, bottomNavigation, navHostFragment,
+          tvOfflineBanner);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

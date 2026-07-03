@@ -4,7 +4,7 @@
             "outputFile": "com.example.studyspace.test.app-debugAndroidTest-4:/values_values.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\e993e59381dfeff1c3d1388599a5c761\\transformed\\core-1.6.1\\res\\values\\values.xml",
+                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\34dc1c34d10b01b84503c18e22ac24d7\\transformed\\core-1.6.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "4,11",
                         "startColumns": "0,0",
@@ -28,7 +28,7 @@
             "outputFile": "com.example.studyspace.test.app-debugAndroidTest-4:/values-v28_values-v28.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\e993e59381dfeff1c3d1388599a5c761\\transformed\\core-1.6.1\\res\\values-v28\\values.xml",
+                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\34dc1c34d10b01b84503c18e22ac24d7\\transformed\\core-1.6.1\\res\\values-v28\\values.xml",
                     "from": {
                         "startLines": "4,13",
                         "startColumns": "0,0",
@@ -52,7 +52,7 @@
             "outputFile": "com.example.studyspace.test.app-debugAndroidTest-4:/values-v21_values-v21.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\e993e59381dfeff1c3d1388599a5c761\\transformed\\core-1.6.1\\res\\values-v21\\values.xml",
+                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\34dc1c34d10b01b84503c18e22ac24d7\\transformed\\core-1.6.1\\res\\values-v21\\values.xml",
                     "from": {
                         "startLines": "4,13",
                         "startColumns": "0,0",
@@ -76,7 +76,7 @@
             "outputFile": "com.example.studyspace.test.app-debugAndroidTest-4:/values-v18_values-v18.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\e993e59381dfeff1c3d1388599a5c761\\transformed\\core-1.6.1\\res\\values-v18\\values.xml",
+                    "source": "C:\\Users\\syakir\\.gradle\\caches\\8.12\\transforms\\34dc1c34d10b01b84503c18e22ac24d7\\transformed\\core-1.6.1\\res\\values-v18\\values.xml",
                     "from": {
                         "startLines": "4,12",
                         "startColumns": "0,0",

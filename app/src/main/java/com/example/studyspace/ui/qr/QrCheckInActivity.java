@@ -35,7 +35,11 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -130,14 +134,75 @@ public class QrCheckInActivity extends AppCompatActivity {
             return;
         }
 
+        runOnUiThread(() -> Toast.makeText(QrCheckInActivity.this, "Validating QR code...", Toast.LENGTH_SHORT).show());
+
         firestore.collection("bookings").document(bookingId)
-                .update("status", "Checked In", "checkedIn", true)
-                .addOnSuccessListener(unused -> runOnUiThread(() -> {
-                    Toast.makeText(QrCheckInActivity.this, "Successfully Checked In!", Toast.LENGTH_LONG).show();
-                    finish();
-                }))
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String roomId = documentSnapshot.getString("roomId");
+                        String date = documentSnapshot.getString("date"); // e.g. 2023-10-15
+                        String startTime = documentSnapshot.getString("startTime"); // e.g. 10:00 AM
+                        String endTime = documentSnapshot.getString("endTime"); // e.g. 12:00 PM
+
+                        if (roomId != null && roomId.equals(qrData)) {
+                            // Validate Time Window
+                            if (date != null && startTime != null && endTime != null) {
+                                try {
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+                                    Date start = sdf.parse(date + " " + startTime);
+                                    Date end = sdf.parse(date + " " + endTime);
+                                    long now = System.currentTimeMillis();
+                                    
+                                    // Allow check-in 15 mins before start time
+                                    long windowStart = start.getTime() - (15 * 60 * 1000);
+                                    long windowEnd = end.getTime();
+                                    
+                                    if (now < windowStart) {
+                                        runOnUiThread(() -> {
+                                            Toast.makeText(QrCheckInActivity.this, "Too early. Check in opens 15 mins before booking.", Toast.LENGTH_LONG).show();
+                                            isScanning = true;
+                                        });
+                                        return;
+                                    } else if (now > windowEnd) {
+                                        runOnUiThread(() -> {
+                                            Toast.makeText(QrCheckInActivity.this, "Booking has expired.", Toast.LENGTH_LONG).show();
+                                            isScanning = true;
+                                        });
+                                        return;
+                                    }
+                                } catch (ParseException e) {
+                                    Log.e("QrCheckIn", "Error parsing booking time", e);
+                                }
+                            }
+
+                            // QR matches and time is valid, proceed to check-in
+                            firestore.collection("bookings").document(bookingId)
+                                    .update("status", "Checked In", "checkedIn", true)
+                                    .addOnSuccessListener(unused -> runOnUiThread(() -> {
+                                        Toast.makeText(QrCheckInActivity.this, "Successfully Checked In!", Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }))
+                                    .addOnFailureListener(e -> runOnUiThread(() -> {
+                                        Toast.makeText(QrCheckInActivity.this, "Failed to check in via network.", Toast.LENGTH_SHORT).show();
+                                        isScanning = true;
+                                    }));
+                        } else {
+                            // QR does not match room
+                            runOnUiThread(() -> {
+                                Toast.makeText(QrCheckInActivity.this, "Invalid QR Code for this room.", Toast.LENGTH_LONG).show();
+                                isScanning = true;
+                            });
+                        }
+                    } else {
+                        runOnUiThread(() -> {
+                            Toast.makeText(QrCheckInActivity.this, "Booking not found.", Toast.LENGTH_SHORT).show();
+                            isScanning = true;
+                        });
+                    }
+                })
                 .addOnFailureListener(e -> runOnUiThread(() -> {
-                    Toast.makeText(QrCheckInActivity.this, "Failed to check in via network.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QrCheckInActivity.this, "Failed to fetch booking.", Toast.LENGTH_SHORT).show();
                     isScanning = true;
                 }));
     }

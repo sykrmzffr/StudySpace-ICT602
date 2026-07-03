@@ -1,6 +1,7 @@
 package com.example.studyspace.data.model;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 /**
  * Room Data Model
@@ -21,11 +22,16 @@ public class Room {
     private double lng = 0.0;
     private String qrCode = "";
     private boolean isAvailable = true;
+    private String imageUrl = "";
+
+    // Transient field for local UI distance sorting (not saved to Firestore)
+    @Exclude
+    public float distanceToUser = 0f;
 
     // Required empty constructor for Firestore
     public Room() {}
 
-    public Room(String id, String name, String location, int capacity, int floor, double lat, double lng, String qrCode, boolean isAvailable) {
+    public Room(String id, String name, String location, int capacity, int floor, double lat, double lng, String qrCode, boolean isAvailable, String imageUrl) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -35,6 +41,7 @@ public class Room {
         this.lng = lng;
         this.qrCode = qrCode;
         this.isAvailable = isAvailable;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() { return id; }
@@ -63,4 +70,7 @@ public class Room {
 
     public boolean isAvailable() { return isAvailable; }
     public void setAvailable(boolean isAvailable) { this.isAvailable = isAvailable; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

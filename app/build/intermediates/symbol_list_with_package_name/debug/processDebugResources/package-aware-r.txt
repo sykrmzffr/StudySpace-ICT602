@@ -1407,7 +1407,11 @@ attr yearTodayStyle
 attr zOrderOnTop
 bool abc_action_bar_embed_tabs
 bool abc_config_actionMenuItemAllCaps
+bool enable_system_alarm_service_default
+bool enable_system_foreground_service_default
+bool enable_system_job_service_default
 bool mtrl_btn_textappearance_all_caps
+bool workmanager_test_configuration
 color abc_background_cache_hint_selector_material_dark
 color abc_background_cache_hint_selector_material_light
 color abc_btn_colored_borderless_text_material
@@ -3369,6 +3373,7 @@ id btnNavigate
 id btnRegister
 id btnSave
 id btnSelectDate
+id btnSortNearest
 id buttonPanel
 id cache_measures
 id callMeasure
@@ -3386,6 +3391,10 @@ id chain2
 id chains
 id checkbox
 id checked
+id chipAvailable
+id chipGroupFilters
+id chipLarge
+id chipSmall
 id chipStatus
 id chronometer
 id circle_center
@@ -3468,6 +3477,7 @@ id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
 id fabClose
+id fabMap
 id fade
 id fill
 id fillCenter
@@ -3507,6 +3517,7 @@ id home
 id homeAsUp
 id honorRequest
 id horizontal_only
+id hsvFilters
 id hybrid
 id icon
 id icon_group
@@ -3527,6 +3538,7 @@ id ivCapacity
 id ivDate
 id ivLocation
 id ivLogo
+id ivRoomImage
 id ivTime
 id jumpToEnd
 id jumpToStart
@@ -3814,6 +3826,7 @@ id tvBookingHeader
 id tvCapacity
 id tvDate
 id tvDateLabel
+id tvDistance
 id tvEmptyState
 id tvFloor
 id tvForgotPassword
@@ -3822,6 +3835,7 @@ id tvFormTitle
 id tvGoToLogin
 id tvGoToRegister
 id tvLocation
+id tvOfflineBanner
 id tvRoomLocation
 id tvRoomName
 id tvSelectedDate

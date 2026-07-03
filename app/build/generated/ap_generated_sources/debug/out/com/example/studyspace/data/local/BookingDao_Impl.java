@@ -41,7 +41,7 @@ public final class BookingDao_Impl implements BookingDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `bookings_table` (`bookingId`,`userId`,`roomId`,`roomName`,`roomLocation`,`date`,`startTime`,`endTime`,`status`,`checkedIn`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `bookings_table` (`bookingId`,`userId`,`roomId`,`roomName`,`roomLocation`,`date`,`startTime`,`endTime`,`status`,`checkedIn`,`isPendingSync`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -93,6 +93,8 @@ public final class BookingDao_Impl implements BookingDao {
         }
         final int _tmp = entity.isCheckedIn() ? 1 : 0;
         statement.bindLong(10, _tmp);
+        final int _tmp_1 = entity.isPendingSync() ? 1 : 0;
+        statement.bindLong(11, _tmp_1);
       }
     };
     this.__deletionAdapterOfBooking = new EntityDeletionOrUpdateAdapter<Booking>(__db) {
@@ -206,6 +208,7 @@ public final class BookingDao_Impl implements BookingDao {
           final int _cursorIndexOfEndTime = CursorUtil.getColumnIndexOrThrow(_cursor, "endTime");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfCheckedIn = CursorUtil.getColumnIndexOrThrow(_cursor, "checkedIn");
+          final int _cursorIndexOfIsPendingSync = CursorUtil.getColumnIndexOrThrow(_cursor, "isPendingSync");
           final List<Booking> _result = new ArrayList<Booking>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Booking _item;
@@ -278,6 +281,11 @@ public final class BookingDao_Impl implements BookingDao {
             _tmp = _cursor.getInt(_cursorIndexOfCheckedIn);
             _tmpCheckedIn = _tmp != 0;
             _item.setCheckedIn(_tmpCheckedIn);
+            final boolean _tmpIsPendingSync;
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfIsPendingSync);
+            _tmpIsPendingSync = _tmp_1 != 0;
+            _item.setPendingSync(_tmpIsPendingSync);
             _result.add(_item);
           }
           return _result;
@@ -291,6 +299,110 @@ public final class BookingDao_Impl implements BookingDao {
         _statement.release();
       }
     });
+  }
+
+  @Override
+  public List<Booking> getPendingBookings() {
+    final String _sql = "SELECT * FROM bookings_table WHERE isPendingSync = 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfBookingId = CursorUtil.getColumnIndexOrThrow(_cursor, "bookingId");
+      final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "userId");
+      final int _cursorIndexOfRoomId = CursorUtil.getColumnIndexOrThrow(_cursor, "roomId");
+      final int _cursorIndexOfRoomName = CursorUtil.getColumnIndexOrThrow(_cursor, "roomName");
+      final int _cursorIndexOfRoomLocation = CursorUtil.getColumnIndexOrThrow(_cursor, "roomLocation");
+      final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
+      final int _cursorIndexOfStartTime = CursorUtil.getColumnIndexOrThrow(_cursor, "startTime");
+      final int _cursorIndexOfEndTime = CursorUtil.getColumnIndexOrThrow(_cursor, "endTime");
+      final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
+      final int _cursorIndexOfCheckedIn = CursorUtil.getColumnIndexOrThrow(_cursor, "checkedIn");
+      final int _cursorIndexOfIsPendingSync = CursorUtil.getColumnIndexOrThrow(_cursor, "isPendingSync");
+      final List<Booking> _result = new ArrayList<Booking>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Booking _item;
+        _item = new Booking();
+        final String _tmpBookingId;
+        if (_cursor.isNull(_cursorIndexOfBookingId)) {
+          _tmpBookingId = null;
+        } else {
+          _tmpBookingId = _cursor.getString(_cursorIndexOfBookingId);
+        }
+        _item.setBookingId(_tmpBookingId);
+        final String _tmpUserId;
+        if (_cursor.isNull(_cursorIndexOfUserId)) {
+          _tmpUserId = null;
+        } else {
+          _tmpUserId = _cursor.getString(_cursorIndexOfUserId);
+        }
+        _item.setUserId(_tmpUserId);
+        final String _tmpRoomId;
+        if (_cursor.isNull(_cursorIndexOfRoomId)) {
+          _tmpRoomId = null;
+        } else {
+          _tmpRoomId = _cursor.getString(_cursorIndexOfRoomId);
+        }
+        _item.setRoomId(_tmpRoomId);
+        final String _tmpRoomName;
+        if (_cursor.isNull(_cursorIndexOfRoomName)) {
+          _tmpRoomName = null;
+        } else {
+          _tmpRoomName = _cursor.getString(_cursorIndexOfRoomName);
+        }
+        _item.setRoomName(_tmpRoomName);
+        final String _tmpRoomLocation;
+        if (_cursor.isNull(_cursorIndexOfRoomLocation)) {
+          _tmpRoomLocation = null;
+        } else {
+          _tmpRoomLocation = _cursor.getString(_cursorIndexOfRoomLocation);
+        }
+        _item.setRoomLocation(_tmpRoomLocation);
+        final String _tmpDate;
+        if (_cursor.isNull(_cursorIndexOfDate)) {
+          _tmpDate = null;
+        } else {
+          _tmpDate = _cursor.getString(_cursorIndexOfDate);
+        }
+        _item.setDate(_tmpDate);
+        final String _tmpStartTime;
+        if (_cursor.isNull(_cursorIndexOfStartTime)) {
+          _tmpStartTime = null;
+        } else {
+          _tmpStartTime = _cursor.getString(_cursorIndexOfStartTime);
+        }
+        _item.setStartTime(_tmpStartTime);
+        final String _tmpEndTime;
+        if (_cursor.isNull(_cursorIndexOfEndTime)) {
+          _tmpEndTime = null;
+        } else {
+          _tmpEndTime = _cursor.getString(_cursorIndexOfEndTime);
+        }
+        _item.setEndTime(_tmpEndTime);
+        final String _tmpStatus;
+        if (_cursor.isNull(_cursorIndexOfStatus)) {
+          _tmpStatus = null;
+        } else {
+          _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
+        }
+        _item.setStatus(_tmpStatus);
+        final boolean _tmpCheckedIn;
+        final int _tmp;
+        _tmp = _cursor.getInt(_cursorIndexOfCheckedIn);
+        _tmpCheckedIn = _tmp != 0;
+        _item.setCheckedIn(_tmpCheckedIn);
+        final boolean _tmpIsPendingSync;
+        final int _tmp_1;
+        _tmp_1 = _cursor.getInt(_cursorIndexOfIsPendingSync);
+        _tmpIsPendingSync = _tmp_1 != 0;
+        _item.setPendingSync(_tmpIsPendingSync);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
   }
 
   @NonNull

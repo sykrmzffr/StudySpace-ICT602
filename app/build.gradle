@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
@@ -80,6 +81,9 @@ dependencies {
 
     // --- Swipe Refresh Layout ---
     implementation libs.swiperefreshlayout
+
+    // --- WorkManager ---
+    implementation libs.work.runtime
 
     // --- Testing ---
     testImplementation libs.junit
