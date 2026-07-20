@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.example.studyspace.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,6 +47,8 @@ public class MyBookingsFragment extends Fragment {
     private FirebaseAuth auth;
     private StudyDatabase database;
     private ExecutorService executorService;
+    private boolean sortAscending = false;
+    private List<Booking> currentBookings = new java.util.ArrayList<>();
 
     @Nullable
     @Override
@@ -72,12 +75,24 @@ public class MyBookingsFragment extends Fragment {
             }
         });
 
+        binding.toolbar.inflateMenu(R.menu.menu_bookings);
+        binding.toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_sort) {
+                sortAscending = !sortAscending;
+                item.setTitle(sortAscending ? "Sort Date Descending" : "Sort Date Ascending");
+                updateListWithSorting();
+                return true;
+            }
+            return false;
+        });
+
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             database.bookingDao().getUserBookings(currentUser.getUid()).observe(getViewLifecycleOwner(), new Observer<List<Booking>>() {
                 @Override
                 public void onChanged(List<Booking> localBookings) {
-                    bookingAdapter.updateData(localBookings);
+                    currentBookings = new java.util.ArrayList<>(localBookings);
+                    updateListWithSorting();
                     binding.tvEmptyState.setVisibility(localBookings.isEmpty() ? View.VISIBLE : View.GONE);
                 }
             });
@@ -92,6 +107,15 @@ public class MyBookingsFragment extends Fragment {
             binding.tvEmptyState.setVisibility(View.VISIBLE);
             binding.tvEmptyState.setText("Please log in to view your bookings.");
         }
+    }
+
+    private void updateListWithSorting() {
+        if (currentBookings == null) return;
+        List<Booking> sorted = new java.util.ArrayList<>(currentBookings);
+        if (sortAscending) {
+            java.util.Collections.reverse(sorted);
+        }
+        bookingAdapter.updateData(sorted);
     }
 
     private void setupRecyclerView() {

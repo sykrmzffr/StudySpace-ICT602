@@ -216,7 +216,15 @@ public class HomeFragment extends Fragment {
                         }
 
                         if (snapshot != null && !snapshot.isEmpty()) {
-                            allRooms = snapshot.toObjects(Room.class);
+                            List<Room> rawRooms = snapshot.toObjects(Room.class);
+                            allRooms = new ArrayList<>();
+                            List<String> seenNames = new ArrayList<>();
+                            for (Room r : rawRooms) {
+                                if (!seenNames.contains(r.getName())) {
+                                    seenNames.add(r.getName());
+                                    allRooms.add(r);
+                                }
+                            }
                             calculateDistancesForDisplay();
                             filterRooms(binding.etSearch.getText() != null ? binding.etSearch.getText().toString() : "");
                         } else {

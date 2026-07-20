@@ -12,6 +12,7 @@
         android:background="@color/primary"
         app:title="@string/my_bookings"
         app:titleTextColor="@color/white"
+        app:menu="@menu/menu_bookings"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

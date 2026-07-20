@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.studyspace.R;
 import com.example.studyspace.data.model.Room;
 import com.example.studyspace.databinding.ActivityRoomDetailBinding;
+import com.example.studyspace.ui.home.RoomAdapter;
 import com.example.studyspace.ui.maps.MapsActivity;
 import com.example.studyspace.utils.NetworkUtils;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,13 +66,17 @@ public class RoomDetailActivity extends AppCompatActivity {
     private Room selectedRoom = null;
     private final Calendar calendar = Calendar.getInstance();
 
-    // Sample time slots for booking
     private final List<String> timeSlots = Arrays.asList(
-            "08:00 AM - 10:00 AM",
-            "10:00 AM - 12:00 PM",
-            "12:00 PM - 02:00 PM",
-            "02:00 PM - 04:00 PM",
-            "04:00 PM - 06:00 PM"
+            "08:00 AM - 09:00 AM",
+            "09:00 AM - 10:00 AM",
+            "10:00 AM - 11:00 AM",
+            "11:00 AM - 12:00 PM",
+            "12:00 PM - 01:00 PM",
+            "01:00 PM - 02:00 PM",
+            "02:00 PM - 03:00 PM",
+            "03:00 PM - 04:00 PM",
+            "04:00 PM - 05:00 PM",
+            "05:00 PM - 06:00 PM"
     );
 
     @Override
@@ -102,10 +107,6 @@ public class RoomDetailActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timeSlots);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTimeSlot.setAdapter(adapter);
-
         updateDateText();
         binding.btnSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +114,8 @@ public class RoomDetailActivity extends AppCompatActivity {
                 showDatePicker();
             }
         });
+
+        // Setup for multiple CheckBox selection handled in loadTimeSlots
 
         binding.btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,15 +136,6 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
                 startActivity(mapIntent);
             }
-        });
-
-        binding.spinnerTimeSlot.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                checkCapacity();
-            }
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
         });
     }
 
@@ -178,13 +172,17 @@ public class RoomDetailActivity extends AppCompatActivity {
             binding.tvCapacity.setText(selectedRoom.getCapacity() + " People");
             binding.tvFloor.setText("Floor " + selectedRoom.getFloor());
 
+            // Set the room-specific header image
+            binding.ivDetailRoomImage.setImageResource(
+                    RoomAdapter.getRoomDrawable(selectedRoom.getName()));
+
             if (!selectedRoom.isAvailable()) {
                 binding.chipStatus.setText("Unavailable");
                 binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_red_light);
                 binding.btnBook.setEnabled(false);
+            } else {
+                loadTimeSlots();
             }
-            
-            checkCapacity();
         }
     }
 
@@ -213,56 +211,114 @@ public class RoomDetailActivity extends AppCompatActivity {
     private void updateDateText() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         binding.tvSelectedDate.setText(sdf.format(calendar.getTime()));
-        checkCapacity();
+        if (selectedRoom != null && selectedRoom.isAvailable()) {
+            loadTimeSlots();
+        }
     }
 
-    private void checkCapacity() {
+    private void loadTimeSlots() {
         if (selectedRoom == null) return;
         
-        if (!selectedRoom.isAvailable()) {
-            binding.chipStatus.setText("Unavailable");
-            binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_red_light);
-            binding.btnBook.setEnabled(false);
-            binding.btnBook.setText("UNAVAILABLE");
-            return;
-        }
-
-        String selectedTime = binding.spinnerTimeSlot.getSelectedItem().toString();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String selectedDateStr = sdf.format(calendar.getTime());
-        
-        String[] timeParts = selectedTime.split(" - ");
-        String startTime = timeParts.length > 0 ? timeParts[0] : selectedTime;
-
+        binding.layoutTimeSlots.removeAllViews();
         binding.btnBook.setEnabled(false);
         binding.btnBook.setText("Checking availability...");
+
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String selectedDateStr = sdfDate.format(calendar.getTime());
 
         firestore.collection("bookings")
                 .whereEqualTo("roomId", roomId)
                 .whereEqualTo("date", selectedDateStr)
-                .whereEqualTo("startTime", startTime)
                 .get()
                 .addOnSuccessListener(snapshot -> {
-                    if (!selectedRoom.isAvailable()) return; // Re-check just in case
+                    if (!selectedRoom.isAvailable()) return;
+                    
+                    binding.btnBook.setText("SELECT A TIME");
 
-                    int bookedCount = snapshot.size();
-                    if (bookedCount >= selectedRoom.getCapacity()) {
-                        binding.chipStatus.setText("Fully Booked");
-                        binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_red_light);
-                        binding.btnBook.setEnabled(false);
-                        binding.btnBook.setText("FULLY BOOKED");
-                    } else {
-                        binding.chipStatus.setText("Available (" + (selectedRoom.getCapacity() - bookedCount) + " left)");
-                        binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_light);
-                        binding.btnBook.setEnabled(true);
-                        binding.btnBook.setText("BOOK ROOM");
+                    Calendar currentCal = Calendar.getInstance();
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+
+                    for (String slot : timeSlots) {
+                        String[] parts = slot.split(" - ");
+                        String startTimeStr = parts[0];
+                        
+                        // Count bookings for this slot
+                        int bookedCount = 0;
+                        for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                            if (startTimeStr.equals(doc.getString("startTime"))) {
+                                bookedCount++;
+                            }
+                        }
+
+                        int slotsLeft = selectedRoom.getCapacity() - bookedCount;
+                        
+                        // Check if time has passed
+                        boolean isPast = false;
+                        try {
+                            Calendar slotCal = (Calendar) calendar.clone();
+                            java.util.Date parsedTime = timeFormat.parse(startTimeStr);
+                            if (parsedTime != null) {
+                                Calendar timeCal = Calendar.getInstance();
+                                timeCal.setTime(parsedTime);
+                                slotCal.set(Calendar.HOUR_OF_DAY, timeCal.get(Calendar.HOUR_OF_DAY));
+                                slotCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+                                if (slotCal.before(currentCal)) {
+                                    isPast = true;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        android.widget.CheckBox cb = new android.widget.CheckBox(this);
+                        cb.setId(View.generateViewId());
+                        cb.setTag(slot);
+                        cb.setPadding(0, 16, 0, 16);
+
+                        if (isPast) {
+                            cb.setText(slot + " (Time passed)");
+                            cb.setEnabled(false);
+                            cb.setTextColor(getResources().getColor(android.R.color.darker_gray, getTheme()));
+                        } else if (slotsLeft <= 0) {
+                            cb.setText(slot + " (Fully booked)");
+                            cb.setEnabled(false);
+                            cb.setTextColor(getResources().getColor(android.R.color.darker_gray, getTheme()));
+                        } else {
+                            cb.setText(slot + " (" + slotsLeft + " left)");
+                            cb.setEnabled(true);
+                            cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                                int checkedCount = getCheckedCount();
+                                binding.btnBook.setEnabled(checkedCount > 0);
+                                if (checkedCount > 0) {
+                                    binding.btnBook.setText("BOOK ROOM (" + checkedCount + " SLOTS)");
+                                    binding.chipStatus.setText(checkedCount + " Slots Selected");
+                                    binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_light);
+                                } else {
+                                    binding.btnBook.setText("SELECT A TIME");
+                                    binding.chipStatus.setText("Available");
+                                    binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_blue_light);
+                                }
+                            });
+                        }
+
+                        binding.layoutTimeSlots.addView(cb);
                     }
                 })
                 .addOnFailureListener(e -> {
-                    showSnackbar("Failed to check availability");
-                    binding.btnBook.setEnabled(true);
-                    binding.btnBook.setText("BOOK ROOM");
+                    showSnackbar("Failed to load time slots");
+                    binding.btnBook.setText("ERROR");
                 });
+    }
+
+    private int getCheckedCount() {
+        int count = 0;
+        for (int i = 0; i < binding.layoutTimeSlots.getChildCount(); i++) {
+            View v = binding.layoutTimeSlots.getChildAt(i);
+            if (v instanceof android.widget.CheckBox && ((android.widget.CheckBox) v).isChecked()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private void performBooking() {
@@ -272,83 +328,97 @@ public class RoomDetailActivity extends AppCompatActivity {
             return;
         }
 
+        int checkedCount = getCheckedCount();
+        if (checkedCount == 0) {
+            showSnackbar("Please select at least one time slot.");
+            return;
+        }
+
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.btnBook.setEnabled(false);
 
-        String selectedTime = binding.spinnerTimeSlot.getSelectedItem().toString();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String selectedDateStr = sdf.format(calendar.getTime());
-        
-        String[] timeParts = selectedTime.split(" - ");
-        String startTime = timeParts.length > 0 ? timeParts[0] : selectedTime;
-        String endTime = timeParts.length > 1 ? timeParts[1] : "";
-
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String selectedDateStr = sdfDate.format(calendar.getTime());
         String roomName = selectedRoom != null ? selectedRoom.getName() : "Unknown Room";
         String roomLocation = selectedRoom != null ? selectedRoom.getLocation() : "";
+        
+        java.util.List<Booking> newBookings = new java.util.ArrayList<>();
+        
+        for (int i = 0; i < binding.layoutTimeSlots.getChildCount(); i++) {
+            View v = binding.layoutTimeSlots.getChildAt(i);
+            if (v instanceof android.widget.CheckBox && ((android.widget.CheckBox) v).isChecked()) {
+                String selectedSlot = (String) v.getTag();
+                String[] parts = selectedSlot.split(" - ");
+                String startTimeStr = parts[0];
+                String endTimeStr = parts[1];
+                
+                String generatedId = UUID.randomUUID().toString();
+                Booking b = new Booking(generatedId, currentUser.getUid(), roomId, roomName, roomLocation, selectedDateStr, startTimeStr, endTimeStr, "Pending", false);
+                b.setCreatedAt(Timestamp.now());
+                newBookings.add(b);
+            }
+        }
 
         if (!NetworkUtils.isConnected(this)) {
-            // Offline Mode: Queue booking locally
-            String generatedId = UUID.randomUUID().toString();
-            Booking offlineBooking = new Booking(generatedId, currentUser.getUid(), roomId, roomName, roomLocation, selectedDateStr, startTime, endTime, "Pending", false);
-            offlineBooking.setPendingSync(true);
-            offlineBooking.setCreatedAt(Timestamp.now());
-
-            Executors.newSingleThreadExecutor().execute(() -> {
-                StudyDatabase.getDatabase(getApplicationContext()).bookingDao().insertBooking(offlineBooking);
+            // Offline Mode: Queue bookings locally
+            java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+                com.example.studyspace.data.local.StudyDatabase db = com.example.studyspace.data.local.StudyDatabase.getDatabase(getApplicationContext());
+                for (Booking b : newBookings) {
+                    b.setPendingSync(true);
+                    db.bookingDao().insertBooking(b);
+                }
                 
                 // Enqueue SyncWorker
-                Constraints constraints = new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                androidx.work.Constraints constraints = new androidx.work.Constraints.Builder()
+                        .setRequiredNetworkType(androidx.work.NetworkType.CONNECTED)
                         .build();
-                OneTimeWorkRequest syncRequest = new OneTimeWorkRequest.Builder(SyncWorker.class)
+                androidx.work.OneTimeWorkRequest syncRequest = new androidx.work.OneTimeWorkRequest.Builder(com.example.studyspace.service.SyncWorker.class)
                         .setConstraints(constraints)
                         .build();
-                WorkManager.getInstance(getApplicationContext()).enqueue(syncRequest);
+                androidx.work.WorkManager.getInstance(getApplicationContext()).enqueue(syncRequest);
 
                 runOnUiThread(() -> {
-                    scheduleNotification(roomName, selectedDateStr, startTime, endTime);
+                    for (Booking b : newBookings) {
+                        scheduleNotification(roomName, selectedDateStr, b.getStartTime(), b.getEndTime());
+                    }
                     binding.progressBar.setVisibility(View.GONE);
-                    showSnackbar("Offline: Booking queued for sync.");
+                    showSnackbar("Offline: " + checkedCount + " booking(s) queued for sync.");
                     binding.getRoot().postDelayed(this::finish, 1500);
                 });
             });
             return;
         }
 
-        // Online Mode: Normal booking
-        Booking newBooking = new Booking("", currentUser.getUid(), roomId, roomName, roomLocation, selectedDateStr, startTime, endTime, "Confirmed", false);
-        newBooking.setCreatedAt(Timestamp.now());
-
-        firestore.collection("bookings")
-                .add(newBooking)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        newBooking.setBookingId(documentReference.getId());
-                        Executors.newSingleThreadExecutor().execute(() -> {
-                            StudyDatabase.getDatabase(getApplicationContext()).bookingDao().insertBooking(newBooking);
-                        });
-
-                        scheduleNotification(roomName, selectedDateStr, startTime, endTime);
-                        binding.progressBar.setVisibility(View.GONE);
-                        showSnackbar("Room booked successfully!");
-                        
-                        binding.getRoot().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                finish();
-                            }
-                        }, 1500);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        binding.progressBar.setVisibility(View.GONE);
-                        binding.btnBook.setEnabled(true);
-                        showSnackbar("Failed to book room: " + e.getMessage());
-                    }
-                });
+        // Online Mode: Normal booking using WriteBatch
+        com.google.firebase.firestore.WriteBatch batch = firestore.batch();
+        
+        for (Booking b : newBookings) {
+            b.setStatus("Confirmed"); // Set as confirmed when online
+            DocumentReference docRef = firestore.collection("bookings").document();
+            b.setBookingId(docRef.getId());
+            batch.set(docRef, b);
+        }
+        
+        batch.commit().addOnSuccessListener(aVoid -> {
+            java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+                com.example.studyspace.data.local.StudyDatabase db = com.example.studyspace.data.local.StudyDatabase.getDatabase(getApplicationContext());
+                for (Booking b : newBookings) {
+                    db.bookingDao().insertBooking(b);
+                }
+            });
+            
+            for (Booking b : newBookings) {
+                scheduleNotification(roomName, selectedDateStr, b.getStartTime(), b.getEndTime());
+            }
+            binding.progressBar.setVisibility(View.GONE);
+            showSnackbar(checkedCount + " room slot(s) booked successfully!");
+            
+            binding.getRoot().postDelayed(this::finish, 1500);
+        }).addOnFailureListener(e -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.btnBook.setEnabled(true);
+            showSnackbar("Failed to book room: " + e.getMessage());
+        });
     }
 
     private void scheduleNotification(String roomName, String dateStr, String startTime, String endTime) {

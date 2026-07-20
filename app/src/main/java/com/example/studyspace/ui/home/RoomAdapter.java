@@ -90,15 +90,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                 binding.tvDistance.setVisibility(View.GONE);
             }
 
-            if (room.getImageUrl() != null && !room.getImageUrl().isEmpty()) {
-                binding.ivRoomImage.setVisibility(View.VISIBLE);
-                com.bumptech.glide.Glide.with(context)
-                        .load(room.getImageUrl())
-                        .centerCrop()
-                        .into(binding.ivRoomImage);
-            } else {
-                binding.ivRoomImage.setVisibility(View.GONE);
-            }
+            binding.ivRoomImage.setVisibility(View.VISIBLE);
+            binding.ivRoomImage.setImageResource(getRoomDrawable(room.getName()));
 
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,5 +100,18 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                 }
             });
         }
+    }
+
+    public static int getRoomDrawable(String roomName) {
+        if (roomName == null) return R.drawable.img_room_placeholder;
+        String lower = roomName.toLowerCase();
+        if (lower.contains("library")) return R.drawable.img_room_library;
+        if (lower.contains("engineering") || lower.contains("hub")) return R.drawable.img_room_engineering;
+        if (lower.contains("quiet") || lower.contains("beta")) return R.drawable.img_room_quiet;
+        if (lower.contains("law")) return R.drawable.img_room_law;
+        if (lower.contains("business") || lower.contains("lounge")) return R.drawable.img_room_business;
+        if (lower.contains("math") || lower.contains("science") || lower.contains("lab")) return R.drawable.img_room_science;
+        if (lower.contains("cempaka") || lower.contains("college") || lower.contains("pod")) return R.drawable.img_room_college;
+        return R.drawable.img_room_placeholder;
     }
 }
